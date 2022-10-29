@@ -1,0 +1,21 @@
+defaults
+        log     global
+        mode    http
+        option  httplog
+        option  dontlognull
+        retries 3
+        option redispatch
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+
+
+frontend http
+        bind *:80
+        bind *:443 ssl crt /etc/letsencrypt/live/www.ifyanyi.tech/fullchain.pem
+        default_backend web-backend
+
+backend web-backend
+        balance roundrobin
+        server 44421-web-01 54.172.67.44:80 check
+        server 44421-web-02 52.91.116.108:80 check
